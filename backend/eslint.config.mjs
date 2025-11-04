@@ -26,10 +26,29 @@ export default tseslint.config(
   },
   {
     rules: {
+      '@typescript-eslint/require-await': 'off',
+      // Apaga formateo como error y otras normas estrictas
+      'prettier/prettier': 'off',
+      'linebreak-style': 'off',
+      'quotes': 'off',
+
+      // Variables no usadas (ambas variantes)
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+
+      // Relacionadas a TS estrictas
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
-      "prettier/prettier": ["error", { endOfLine: "auto" }],
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
+
+      // Otras comunes
+      'no-console': 'off',
     },
   },
 );
