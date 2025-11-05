@@ -2,7 +2,7 @@ import { LoginRepository } from "@/src/app/core/application/ports/LoginRepositor
 import {
   loginDTO,
   loginResponse
-} from "@/src/app/core/domain/dtos/LoginDtos";
+} from "@/src/models/dtos/LoginDtos";
 import { loginUseCase } from "@/src/app/core/application/useCases/auth/LoginUseCase";
 
 export class LoginService implements loginUseCase {

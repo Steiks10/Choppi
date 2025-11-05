@@ -9,6 +9,26 @@ const loginRepository = new ConcreteLoginRepository();
 const loginService = new LoginService(loginRepository);
 const loginController = new LoginController(loginService);
 
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    if (searchParams.get("logout") === "1") {
+      const res = NextResponse.redirect(new URL("/", req.url));
+      res.cookies.set("session", "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        expires: new Date(0),
+      });
+      return res;
+    }
+    return NextResponse.json({ message: "Method Not Allowed. Use POST." }, { status: 405 });
+  } catch {
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  }
+}
+
 export async function POST(req: Request) {
   try {
     console.log("logie");

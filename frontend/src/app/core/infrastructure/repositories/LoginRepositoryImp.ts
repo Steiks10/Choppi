@@ -1,7 +1,7 @@
 // src/infrastructure/repositories/ConcreteLoginRepository.ts
 
 import { LoginRepository } from "@/src/app/core/application/ports/LoginRepository";
-import { loginDTO, loginResponse } from "@/src/app/core/domain/dtos/LoginDtos";
+import { loginDTO, loginResponse } from "@/src/models/dtos/LoginDtos";
 import { injectable } from "inversify";
 
 @injectable()

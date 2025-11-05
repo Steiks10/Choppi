@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { LoginController } from "@/src/app/core/infrastructure/controllers/LoginController";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,16 +16,16 @@ export default function Home() {
     const password = String(form.get("password"));
 
     try {
-      const auth = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_URL}/api/auth/login`, {
+      const auth = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-        // credentials: "include", // si es cross-origin
+        // credentials: "include", // no es necesario en same-origin, opcional
       });
       if (!auth.ok) throw new Error(`Login failed: ${auth.status}`);
       const data = await auth.json();
-      console.log("Auth OK:", data); // La cookie 'session' ya quedó seteada (HTTP-only)
-      // TODO: redirigir a dashboard
+      console.log("Auth OK:", data);
+      router.push("/stores");
     } catch (err) {
       console.error(err);
       // TODO: mostrar error en UI
@@ -69,7 +70,7 @@ export default function Home() {
               <div>
                 <label
                   htmlFor="email"
-                  className="mb-1 block text-sm font-medium text-zinc-700"
+                  className="mb-1 block text-sm font-medium text-[#E0891A]"
                 >
                   Correo electrónico
                 </label>
@@ -79,14 +80,14 @@ export default function Home() {
                   type="email"
                   required
                   placeholder="tú@correo.com"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 placeholder-zinc-400 outline-none transition focus:border-[#F6A54D] focus:ring-2 focus:ring-[#FFD8A8]"
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-[#7A4A00] placeholder-zinc-400 outline-none transition focus:border-[#F6A54D] focus:ring-2 focus:ring-[#FFD8A8]"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="password"
-                  className="mb-1 block text-sm font-medium text-zinc-700"
+                  className="mb-1 block text-sm font-medium text-[#E0891A]"
                 >
                   Contraseña
                 </label>
@@ -96,12 +97,12 @@ export default function Home() {
                   type="password"
                   required
                   placeholder="••••••••"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-zinc-900 placeholder-zinc-400 outline-none transition focus:border-[#F6A54D] focus:ring-2 focus:ring-[#FFD8A8]"
+                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-[#7A4A00] placeholder-zinc-400 outline-none transition focus:border-[#F6A54D] focus:ring-2 focus:ring-[#FFD8A8]"
                 />
               </div>
 
               <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-sm text-zinc-700">
+                <label className="flex items-center gap-2 text-sm text-[#E0891A]">
                   <input
                     type="checkbox"
                     name="remember"
@@ -132,13 +133,9 @@ export default function Home() {
               <div className="h-px flex-1 bg-zinc-200" />
             </div>
 
-            <button className="mt-6 w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:border-[#FFD8A8] hover:bg-[#FFF7EC]">
-              Continuar con Google
-            </button>
-
             <p className="mt-6 text-center text-sm text-zinc-700">
               ¿No tienes cuenta?{" "}
-              <Link href="#" className="font-semibold text-[#E0891A] hover:underline">
+              <Link href="/register" className="font-semibold text-[#E0891A] hover:underline">
                 Regístrate
               </Link>
             </p>

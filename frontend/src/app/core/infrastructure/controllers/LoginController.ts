@@ -1,7 +1,7 @@
 // src/interface/controllers/LoginController.ts
 
 import { LoginService } from "@/src/app/core/application/LoginService";
-import { loginDTO } from '@/src/app/core/domain/dtos/LoginDtos'
+import { loginDTO } from '@/src/models/dtos/LoginDtos'
 
 export class LoginController {
   constructor(private readonly loginService: LoginService) {}
