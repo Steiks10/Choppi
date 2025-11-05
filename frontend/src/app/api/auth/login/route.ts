@@ -19,8 +19,19 @@ export async function POST(req: Request) {
     // Llamar al controlador de login
     const response = await loginController.handleLogin(body);
 
-    // Devolver una respuesta exitosa
-    return NextResponse.json(response, { status: 200 });
+    // Setear cookie de sesión con el token (si viene en response)
+    const res = NextResponse.json(response, { status: 200 });
+    const token = (response as any)?.data?.token ?? (response as any)?.token;
+    if (token) {
+      res.cookies.set("session", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7, // 7 días
+      });
+    }
+    return res;
   } catch (error) {
     console.error("Error en POST /api/login:", error);
 

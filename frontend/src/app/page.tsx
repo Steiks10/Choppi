@@ -4,8 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { LoginController } from "@/src/app/core/infrastructure/controllers/LoginController";
 
-const loginController = new LoginController();
-
 export default function Home() {
   const [loading, setLoading] = useState(false);
 
@@ -17,9 +15,16 @@ export default function Home() {
     const password = String(form.get("password"));
 
     try {
-      const auth = await loginController.handleLogin({email, password});
-      console.log("Auth OK:", auth);
-      // TODO: guardar token, redirigir, etc.
+      const auth = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        // credentials: "include", // si es cross-origin
+      });
+      if (!auth.ok) throw new Error(`Login failed: ${auth.status}`);
+      const data = await auth.json();
+      console.log("Auth OK:", data); // La cookie 'session' ya quedó seteada (HTTP-only)
+      // TODO: redirigir a dashboard
     } catch (err) {
       console.error(err);
       // TODO: mostrar error en UI
